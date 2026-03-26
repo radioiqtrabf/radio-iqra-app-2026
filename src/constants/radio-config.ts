@@ -8,22 +8,22 @@ export const RADIO_CONFIG = {
   RADIO_NAME: "RADIO IQRA TV",
   SLOGAN: "La Voix du Saint Coran",
   DESCRIPTION: `Basée au cœur du Burkina Faso, RADIO IQRA TV est une station islamique dédiée à la diffusion des enseignements authentiques de l'Islam, dans un esprit de paix, de fraternité et d'éducation spirituelle. Fidèle à sa mission, notre radio-télévision tire son nom de l'impératif divin "Iqra" (Lis), qui rappelle l'importance de la connaissance dans l'épanouissement de la foi et de la société.`,
-  
+
   // === FRÉQUENCES ===
   FREQUENCIES: [
     { city: "Ouagadougou", frequency: "FM 92.5" },
     { city: "Bobo-Dioulasso", frequency: "FM 88.3" },
   ],
-  
+
   // === FLUX AUDIO ===
   STREAM_URL: "https://a10.asurahosting.com:8170/radio.mp3",
   STREAM_TYPE: "audio/mpeg",
-  
+
   // === API AZURACAST ===
   AZURACAST_API_BASE: "https://a10.asurahosting.com:8170",
   AZURACAST_API_KEY: "93603a6dea6d0f08:6ce0854f92ad65c2404f9edbd34d0a53",
   NOW_PLAYING_ENDPOINT: "/api/nowplaying/1",
-  
+
   // === RÉSEAUX SOCIAUX ===
   SOCIAL: {
     WEBSITE: {
@@ -48,7 +48,7 @@ export const RADIO_CONFIG = {
     },
     TIKTOK: {
       label: "TikTok",
-      url: "https://tiktok.com/@radio.iqra.tv?is_from_webapp=1&sender_device=pc",
+      url: "https://tiktok.com/@radio_iqra_officielle",
       icon: "logo-tiktok",
     },
     YOUTUBE: {
@@ -62,22 +62,22 @@ export const RADIO_CONFIG = {
       icon: "logo-whatsapp",
     },
   },
-  
+
   // === CONTACT ===
   CONTACT: {
     email: "radioiqra07@gmail.com",
     phone: "+226 76 01 12 08",
     address: "Ouagadougou, Burkina Faso",
   },
-  
+
   // === ACTUALITÉS (Derniers Posts/Vidéos) ===
   NEWS: {
-    FACEBOOK_PAGE_URL: "https://www.facebook.com/100063255562719", // Format Page ID ou profile
+    FACEBOOK_PAGE_URL: "https://www.facebook.com/radioiqtraburkina",
     FACEBOOK_PAGE_ID: "569927726195521",
     YOUTUBE_CHANNEL_ID: "UCJ9nE4p5YlbTsP_fLZvxRLw",
-    TIKTOK_VIDEO_IDS: ["7621529467245216775"],
+    TIKTOK_VIDEO_IDS: ["7613430955721690386", "7617409803836542215"], // Nouveaux IDs fonctionnels
   },
-  
+
   // === PROGRAMMES ===
   PROGRAMS: [
     {
@@ -144,7 +144,7 @@ export const RADIO_CONFIG = {
       icon: "star-outline",
     },
   ],
-  
+
   // === THÈME ===
   THEME: {
     primaryColor: "#10B981", // Vert emeraude
