@@ -29,7 +29,8 @@ import {
   Loader2,
   Instagram,
   Twitter,
-  Music2
+  Music2,
+  Newspaper
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -47,7 +48,7 @@ interface NowPlayingData {
   duration: number;
 }
 
-type TabType = "radio" | "programs" | "about";
+type TabType = "radio" | "news" | "about";
 
 // Audio Visualizer Component
 function AudioVisualizer({ isPlaying }: { isPlaying: boolean }) {
@@ -381,19 +382,76 @@ function AboutScreen() {
   );
 }
 
-// Programs Screen Component
-function ProgramsScreen() {
+// News Screen Component
+function NewsScreen() {
+  const [activePlatform, setActivePlatform] = useState<"facebook" | "youtube" | "tiktok">("facebook");
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="text-center mb-6">
-        <h1 className="text-2xl font-bold text-white mb-2">Grille des Programmes</h1>
-        <p className="text-gray-400 text-sm">Découvrez nos émissions quotidiennes</p>
+        <h1 className="text-2xl font-bold text-white mb-2">Actualités</h1>
+        <p className="text-gray-400 text-sm">Suivez nos dernières publications</p>
       </div>
-      
-      <div className="space-y-3">
-        {RADIO_CONFIG.PROGRAMS.map((program) => (
-          <ProgramCard key={program.id} program={program} />
-        ))}
+
+      {/* Platform Selector */}
+      <div className="flex bg-white/5 rounded-xl p-1 mb-6">
+        <button 
+          onClick={() => setActivePlatform("facebook")}
+          className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-medium transition-colors ${activePlatform === "facebook" ? "bg-blue-600 text-white" : "text-gray-400 hover:text-white"}`}
+        >
+          <Facebook className="w-4 h-4" /> Facebook
+        </button>
+        <button 
+          onClick={() => setActivePlatform("youtube")}
+          className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-medium transition-colors ${activePlatform === "youtube" ? "bg-red-600 text-white" : "text-gray-400 hover:text-white"}`}
+        >
+          <Youtube className="w-4 h-4" /> YouTube
+        </button>
+        <button 
+          onClick={() => setActivePlatform("tiktok")}
+          className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-medium transition-colors ${activePlatform === "tiktok" ? "bg-gray-800 text-white" : "text-gray-400 hover:text-white"}`}
+        >
+          <Music2 className="w-4 h-4" /> TikTok
+        </button>
+      </div>
+
+      {/* Content */}
+      <div className="min-h-[500px] flex flex-col items-center">
+        {activePlatform === "facebook" && (
+          <div className="w-full flex justify-center bg-white rounded-lg overflow-hidden">
+             <iframe src={`https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(RADIO_CONFIG.NEWS.FACEBOOK_PAGE_URL)}&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId`} width="340" height="500" style={{border:"none",overflow:"hidden"}} scrolling="no" frameBorder="0" allowFullScreen={true} allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+          </div>
+        )}
+        {activePlatform === "youtube" && (
+          <div className="w-full space-y-4">
+            {RADIO_CONFIG.NEWS.YOUTUBE_VIDEO_IDS.map((id, idx) => (
+              id !== "VOTRE_ID_VIDEO_YOUTUBE" ? (
+                <div key={idx} className="relative w-full rounded-xl overflow-hidden aspect-video border border-white/10">
+                  <iframe className="absolute top-0 left-0 w-full h-full" src={`https://www.youtube.com/embed/${id}`} title="YouTube video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                </div>
+              ) : (
+                <div key={idx} className="p-4 text-center text-gray-400 border border-dashed border-gray-600 rounded-xl">
+                  Ajoutez l'ID de votre vidéo YouTube dans radio-config.ts
+                </div>
+              )
+            ))}
+          </div>
+        )}
+        {activePlatform === "tiktok" && (
+          <div className="w-full space-y-4">
+            {RADIO_CONFIG.NEWS.TIKTOK_VIDEO_IDS.map((id, idx) => (
+              id !== "VOTRE_ID_VIDEO_TIKTOK" ? (
+                <div key={idx} className="flex justify-center w-full">
+                  <iframe src={`https://www.tiktok.com/embed/v2/${id}`} className="w-full max-w-[325px] h-[600px] rounded-xl border border-white/10" allowFullScreen scrolling="no" allow="encrypted-media;"></iframe>
+                </div>
+              ) : (
+                <div key={idx} className="p-4 text-center text-gray-400 border border-dashed border-gray-600 rounded-xl">
+                  Ajoutez l'ID de votre vidéo TikTok dans radio-config.ts
+                </div>
+              )
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -615,15 +673,15 @@ export default function RadioApp() {
                 />
               </motion.div>
             )}
-            {activeTab === "programs" && (
+            {activeTab === "news" && (
               <motion.div
-                key="programs"
+                key="news"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
                 transition={{ duration: 0.2 }}
               >
-                <ProgramsScreen />
+                <NewsScreen />
               </motion.div>
             )}
             {activeTab === "about" && (
@@ -650,10 +708,10 @@ export default function RadioApp() {
               label="Radio"
             />
             <TabButton
-              active={activeTab === "programs"}
-              onClick={() => setActiveTab("programs")}
-              icon={Clock}
-              label="Programmes"
+              active={activeTab === "news"}
+              onClick={() => setActiveTab("news")}
+              icon={Newspaper}
+              label="Actualités"
             />
             <TabButton
               active={activeTab === "about"}

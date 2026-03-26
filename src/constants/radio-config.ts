@@ -70,6 +70,13 @@ export const RADIO_CONFIG = {
     address: "Ouagadougou, Burkina Faso",
   },
   
+  // === ACTUALITÉS (Derniers Posts/Vidéos) ===
+  NEWS: {
+    FACEBOOK_PAGE_URL: "https://www.facebook.com/profile.php?id=61571862830361",
+    YOUTUBE_VIDEO_IDS: ["VOTRE_ID_VIDEO_YOUTUBE"], // Remplacez par les IDs des vidéos
+    TIKTOK_VIDEO_IDS: ["VOTRE_ID_VIDEO_TIKTOK"],
+  },
+  
   // === PROGRAMMES ===
   PROGRAMS: [
     {
