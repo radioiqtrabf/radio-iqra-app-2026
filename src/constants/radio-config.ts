@@ -72,8 +72,8 @@ export const RADIO_CONFIG = {
 
   // === ACTUALITÉS (Derniers Posts/Vidéos) ===
   NEWS: {
-    FACEBOOK_PAGE_URL: "https://www.facebook.com/radioiqtraburkina",
-    FACEBOOK_PAGE_ID: "569927726195521",
+    FACEBOOK_PAGE_URL: "https://www.facebook.com/61571862830361",
+    FACEBOOK_PAGE_ID: "61571862830361",
     YOUTUBE_CHANNEL_ID: "UCJ9nE4p5YlbTsP_fLZvxRLw",
     TIKTOK_VIDEO_IDS: ["7613430955721690386", "7617409803836542215"], // Nouveaux IDs fonctionnels
   },
