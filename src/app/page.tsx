@@ -387,63 +387,119 @@ function NewsScreen() {
   const [activePlatform, setActivePlatform] = useState<"facebook" | "youtube" | "tiktok">("facebook");
 
   return (
-    <div className="space-y-6">
-      <div className="text-center mb-6">
-        <h1 className="text-2xl font-bold text-white mb-2">Actualités</h1>
-        <p className="text-gray-400 text-sm">Suivez nos dernières publications</p>
+    <div className="space-y-8 pb-12">
+      <div className="text-center relative pt-4">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-emerald-500/20 rounded-full blur-[60px] pointer-events-none" />
+        <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400 mb-2 relative z-10 tracking-tight">
+          Actualités En Direct
+        </h1>
+        <p className="text-gray-400 text-sm max-w-xs mx-auto relative z-10 font-medium">Ne manquez plus aucun de nos directs et publications</p>
       </div>
 
-      {/* Platform Selector */}
-      <div className="flex bg-white/5 rounded-xl p-1 mb-6">
-        <button 
-          onClick={() => setActivePlatform("facebook")}
-          className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-medium transition-colors ${activePlatform === "facebook" ? "bg-blue-600 text-white" : "text-gray-400 hover:text-white"}`}
-        >
-          <Facebook className="w-4 h-4" /> Facebook
-        </button>
-        <button 
-          onClick={() => setActivePlatform("youtube")}
-          className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-medium transition-colors ${activePlatform === "youtube" ? "bg-red-600 text-white" : "text-gray-400 hover:text-white"}`}
-        >
-          <Youtube className="w-4 h-4" /> YouTube
-        </button>
-        <button 
-          onClick={() => setActivePlatform("tiktok")}
-          className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-medium transition-colors ${activePlatform === "tiktok" ? "bg-gray-800 text-white" : "text-gray-400 hover:text-white"}`}
-        >
-          <Music2 className="w-4 h-4" /> TikTok
-        </button>
+      {/* Modern Platform Selector */}
+      <div className="flex bg-gray-900/50 backdrop-blur-xl border border-white/5 rounded-2xl p-1.5 mb-8 relative max-w-sm mx-auto shadow-2xl">
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-emerald-500/10 rounded-2xl pointer-events-none" />
+        {(["facebook", "youtube", "tiktok"] as const).map((platform) => {
+          const isActive = activePlatform === platform;
+          const icons = {
+            facebook: <Facebook className="w-5 h-5" />,
+            youtube: <Youtube className="w-5 h-5" />,
+            tiktok: <Music2 className="w-5 h-5" />
+          };
+          const colors = {
+             facebook: "bg-blue-600 shadow-blue-500/40",
+             youtube: "bg-red-600 shadow-red-500/40",
+             tiktok: "bg-slate-800 shadow-slate-900/40"
+          };
+          
+          return (
+            <button 
+              key={platform}
+              onClick={() => setActivePlatform(platform)}
+              className={`relative flex-1 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 py-3 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 z-10 ${isActive ? "text-white" : "text-gray-500 hover:text-white hover:bg-white/5"}`}
+            >
+              {isActive && (
+                <motion.div
+                  layoutId="activePlatformBubble"
+                  className={`absolute inset-0 rounded-xl shadow-lg ${colors[platform]}`}
+                  transition={{ type: "spring", bounce: 0.25, duration: 0.6 }}
+                />
+              )}
+              <span className="relative z-10 block">{icons[platform]}</span>
+              <span className="relative z-10 capitalize">{platform}</span>
+            </button>
+          )
+        })}
       </div>
 
-      {/* Content */}
-      <div className="min-h-[500px] flex flex-col items-center">
-        {activePlatform === "facebook" && (
-          <div className="w-full flex justify-center bg-white rounded-lg overflow-hidden">
-             <iframe src={`https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F${RADIO_CONFIG.NEWS.FACEBOOK_PAGE_ID}&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId`} width="340" height="500" style={{border:"none",overflow:"hidden"}} scrolling="no" frameBorder="0" allowFullScreen={true} allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-          </div>
-        )}
-        {activePlatform === "youtube" && (
-          <div className="w-full space-y-4">
-            <div className="relative w-full rounded-xl overflow-hidden aspect-video border border-white/10">
-              <iframe className="absolute top-0 left-0 w-full h-full" src={`https://www.youtube.com/embed?listType=playlist&list=${RADIO_CONFIG.NEWS.YOUTUBE_CHANNEL_ID.replace('UC', 'UU')}`} title="YouTube channel videos" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-            </div>
-          </div>
-        )}
-        {activePlatform === "tiktok" && (
-          <div className="w-full space-y-4">
-            {RADIO_CONFIG.NEWS.TIKTOK_VIDEO_IDS.map((id, idx) => (
-              id !== "VOTRE_ID_VIDEO_TIKTOK" ? (
-                <div key={idx} className="flex justify-center w-full">
-                  <iframe src={`https://www.tiktok.com/embed/v2/${id}`} className="w-full max-w-[325px] h-[600px] rounded-xl border border-white/10" allowFullScreen scrolling="no" allow="encrypted-media;"></iframe>
+      {/* Content Container */}
+      <div className="min-h-[600px] w-full max-w-md mx-auto relative">
+        <AnimatePresence mode="popLayout">
+          <motion.div
+            key={activePlatform}
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -30, scale: 0.95 }}
+            transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+            className="w-full flex flex-col items-center gap-6"
+          >
+            {activePlatform === "facebook" && (
+              <div className="w-full bg-white rounded-3xl overflow-hidden shadow-2xl ring-1 ring-white/10 shadow-blue-500/20 transform-gpu transition-all">
+                 <div className="h-1.5 bg-gradient-to-r from-blue-400 to-blue-600 w-full" />
+                 {/* La page plugin de facebook gère automatiquement l'affichage des vidéos en direct si existantes grâce au composant timeline */}
+                 <iframe src={`https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F${RADIO_CONFIG.NEWS.FACEBOOK_PAGE_ID}&tabs=timeline&width=380&height=650&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false&appId`} width="100%" height="650" style={{border:"none",overflow:"hidden", backgroundColor:"white"}} scrolling="no" frameBorder="0" allowFullScreen={true} allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+              </div>
+            )}
+            
+            {activePlatform === "youtube" && (
+              <div className="w-full space-y-8">
+                {/* LIVE Section */}
+                <div className="w-full bg-slate-900/60 backdrop-blur-2xl rounded-3xl overflow-hidden shadow-2xl ring-1 ring-white/10 shadow-red-500/10 p-1.5">
+                  <div className="px-4 py-3.5 flex items-center justify-between border-b border-white/5">
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-3 w-3 relative">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                      </span>
+                      <h3 className="text-white font-bold text-sm tracking-wide">EN DIRECT SUR YOUTUBE</h3>
+                    </div>
+                  </div>
+                  <div className="relative w-full rounded-[20px] overflow-hidden aspect-video bg-black/50">
+                    {/* Le paramètre live_stream affiche le direct actuel automatiquement, sinon "vidéo indisponible" si pas de direct en cours. */}
+                    <iframe className="absolute top-0 left-0 w-full h-full" src={`https://www.youtube.com/embed/live_stream?channel=${RADIO_CONFIG.NEWS.YOUTUBE_CHANNEL_ID}&autoplay=1`} title="YouTube Live stream" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                  </div>
                 </div>
-              ) : (
-                <div key={idx} className="p-4 text-center text-gray-400 border border-dashed border-gray-600 rounded-xl">
-                  Ajoutez l'ID de votre vidéo TikTok dans radio-config.ts
+
+                {/* PLAYLIST Section */}
+                <div className="w-full bg-slate-900/40 backdrop-blur-2xl rounded-3xl overflow-hidden shadow-xl ring-1 ring-white/5 p-1.5">
+                  <div className="px-4 py-3 border-b border-white/5">
+                    <h3 className="text-emerald-400 font-semibold text-sm">Dernières publications (Vidéos)</h3>
+                  </div>
+                  <div className="relative w-full rounded-[20px] overflow-hidden aspect-video bg-black/30">
+                    <iframe className="absolute top-0 left-0 w-full h-full" src={`https://www.youtube.com/embed?listType=playlist&list=${RADIO_CONFIG.NEWS.YOUTUBE_CHANNEL_ID.replace('UC', 'UU')}`} title="YouTube channel videos" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                  </div>
                 </div>
-              )
-            ))}
-          </div>
-        )}
+              </div>
+            )}
+            
+            {activePlatform === "tiktok" && (
+              <div className="w-full space-y-6">
+                {RADIO_CONFIG.NEWS.TIKTOK_VIDEO_IDS.map((id, idx) => (
+                  id !== "VOTRE_ID_VIDEO_TIKTOK" ? (
+                    <div key={idx} className="w-full bg-slate-900/60 backdrop-blur-2xl rounded-3xl overflow-hidden shadow-2xl ring-1 ring-white/10 shadow-slate-700/20 flex justify-center p-2.5">
+                      <iframe src={`https://www.tiktok.com/embed/v2/${id}`} className="w-full max-w-[325px] h-[600px] rounded-2xl bg-black" allowFullScreen scrolling="no" allow="encrypted-media;"></iframe>
+                    </div>
+                  ) : (
+                    <div key={idx} className="p-8 text-center border-dashed border-2 border-slate-700 rounded-3xl bg-slate-900/40">
+                      <Music2 className="w-8 h-8 text-slate-500 mx-auto mb-3" />
+                      <p className="text-slate-400 text-sm">Ajoutez l'ID de votre vidéo TikTok dans les configurations pour l'afficher ici.</p>
+                    </div>
+                  )
+                ))}
+              </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );
