@@ -419,22 +419,14 @@ function NewsScreen() {
       <div className="min-h-[500px] flex flex-col items-center">
         {activePlatform === "facebook" && (
           <div className="w-full flex justify-center bg-white rounded-lg overflow-hidden">
-             <iframe src={`https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(RADIO_CONFIG.NEWS.FACEBOOK_PAGE_URL)}&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId`} width="340" height="500" style={{border:"none",overflow:"hidden"}} scrolling="no" frameBorder="0" allowFullScreen={true} allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+             <iframe src={`https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F${RADIO_CONFIG.NEWS.FACEBOOK_PAGE_ID}&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId`} width="340" height="500" style={{border:"none",overflow:"hidden"}} scrolling="no" frameBorder="0" allowFullScreen={true} allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
           </div>
         )}
         {activePlatform === "youtube" && (
           <div className="w-full space-y-4">
-            {RADIO_CONFIG.NEWS.YOUTUBE_VIDEO_IDS.map((id, idx) => (
-              id !== "VOTRE_ID_VIDEO_YOUTUBE" ? (
-                <div key={idx} className="relative w-full rounded-xl overflow-hidden aspect-video border border-white/10">
-                  <iframe className="absolute top-0 left-0 w-full h-full" src={`https://www.youtube.com/embed/${id}`} title="YouTube video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-                </div>
-              ) : (
-                <div key={idx} className="p-4 text-center text-gray-400 border border-dashed border-gray-600 rounded-xl">
-                  Ajoutez l'ID de votre vidéo YouTube dans radio-config.ts
-                </div>
-              )
-            ))}
+            <div className="relative w-full rounded-xl overflow-hidden aspect-video border border-white/10">
+              <iframe className="absolute top-0 left-0 w-full h-full" src={`https://www.youtube.com/embed?listType=playlist&list=${RADIO_CONFIG.NEWS.YOUTUBE_CHANNEL_ID.replace('UC', 'UU')}`} title="YouTube channel videos" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+            </div>
           </div>
         )}
         {activePlatform === "tiktok" && (

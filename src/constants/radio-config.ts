@@ -72,9 +72,10 @@ export const RADIO_CONFIG = {
   
   // === ACTUALITÉS (Derniers Posts/Vidéos) ===
   NEWS: {
-    FACEBOOK_PAGE_URL: "https://www.facebook.com/profile.php?id=61571862830361",
-    YOUTUBE_VIDEO_IDS: ["VOTRE_ID_VIDEO_YOUTUBE"], // Remplacez par les IDs des vidéos
-    TIKTOK_VIDEO_IDS: ["VOTRE_ID_VIDEO_TIKTOK"],
+    FACEBOOK_PAGE_URL: "https://www.facebook.com/100063255562719", // Format Page ID ou profile
+    FACEBOOK_PAGE_ID: "569927726195521",
+    YOUTUBE_CHANNEL_ID: "UCJ9nE4p5YlbTsP_fLZvxRLw",
+    TIKTOK_VIDEO_IDS: ["7621529467245216775"],
   },
   
   // === PROGRAMMES ===
